@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="zh">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="./css/bootstrap.min.css">
+  <link rel="stylesheet" href="./css/navbar.css">
+  <link rel="stylesheet" href="./css/main.css">
+  <link rel="stylesheet" href="./css/turnTable.css">
+  <link rel="stylesheet" href="./css/dblColorBall.css">
+  <title>SKKVVT</title>
+  <style>
+    *,
+    .container-fluid {
+      margin: 0;
+      padding: 0;
+    }
+
+    html,body {
+      position: fixed;
+      width: 100%;
+      min-height: 100%;
+      overflow-x: hidden;
+    }
+
+    section { 
+      padding-top: 3.5rem;
+      position: absolute;
+      z-index: 100;
+    }
+
+    #scratch-card {
+      width: 100%;
+      height: 100vh;
+      background: #ced4da;
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- 引入几个svg图标 -->
+  <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+    <symbol id="house" viewbox="0 0 16 16">
+      <path fill-rule="evenodd"
+        d="M2 13.5V7h1v6.5a.5.5 0 0 0 .5.5h9a.5.5 0 0 0 .5-.5V7h1v6.5a1.5 1.5 0 0 1-1.5 1.5h-9A1.5 1.5 0 0 1 2 13.5zm11-11V6l-2-2V2.5a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5z" />
+      <path fill-rule="evenodd"
+        d="M7.293 1.5a1 1 0 0 1 1.414 0l6.647 6.646a.5.5 0 0 1-.708.708L8 2.207 1.354 8.854a.5.5 0 1 1-.708-.708L7.293 1.5z" />
+    </symbol>
+    <symbol id="house-fill" viewbox="0 0 16 16">
+      <path fill-rule="evenodd"
+        d="m8 3.293 6 6V13.5a1.5 1.5 0 0 1-1.5 1.5h-9A1.5 1.5 0 0 1 2 13.5V9.293l6-6zm5-.793V6l-2-2V2.5a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5z" />
+      <path fill-rule="evenodd"
+        d="M7.293 1.5a1 1 0 0 1 1.414 0l6.647 6.646a.5.5 0 0 1-.708.708L8 2.207 1.354 8.854a.5.5 0 1 1-.708-.708L7.293 1.5z" />
+    </symbol>
+    <symbol id="turn" viewbox="0 0 16 16">
+      <path
+        d="M1 2.5A1.5 1.5 0 0 1 2.5 1h12A1.5 1.5 0 0 1 16 2.5v12a1.5 1.5 0 0 1-1.5 1.5h-12A1.5 1.5 0 0 1 1 14.5V14H.5a.5.5 0 0 1 0-1H1V9H.5a.5.5 0 0 1 0-1H1V4H.5a.5.5 0 0 1 0-1H1v-.5zM2.5 2a.5.5 0 0 0-.5.5v12a.5.5 0 0 0 .5.5h12a.5.5 0 0 0 .5-.5v-12a.5.5 0 0 0-.5-.5h-12z" />
+      <path
+        d="M5.035 8h1.528c.047-.184.12-.357.214-.516l-1.08-1.08A3.482 3.482 0 0 0 5.035 8zm1.369-2.303 1.08 1.08c.16-.094.332-.167.516-.214V5.035a3.482 3.482 0 0 0-1.596.662zM9 5.035v1.528c.184.047.357.12.516.214l1.08-1.08A3.482 3.482 0 0 0 9 5.035zm2.303 1.369-1.08 1.08c.094.16.167.332.214.516h1.528a3.483 3.483 0 0 0-.662-1.596zM11.965 9h-1.528c-.047.184-.12.357-.214.516l1.08 1.08A3.483 3.483 0 0 0 11.965 9zm-1.369 2.303-1.08-1.08c-.16.094-.332.167-.516.214v1.528a3.483 3.483 0 0 0 1.596-.662zM8 11.965v-1.528a1.989 1.989 0 0 1-.516-.214l-1.08 1.08A3.483 3.483 0 0 0 8 11.965zm-2.303-1.369 1.08-1.08A1.988 1.988 0 0 1 6.563 9H5.035c.085.593.319 1.138.662 1.596zM4 8.5a4.5 4.5 0 1 1 9 0 4.5 4.5 0 0 1-9 0zm4.5-1a1 1 0 1 0 0 2 1 1 0 0 0 0-2z" />
+    </symbol>
+    <symbol id="turn-fill" viewbox="0 0 16 16">
+      <path
+        d="M6.563 8H5.035a3.482 3.482 0 0 1 .662-1.596l1.08 1.08c-.094.16-.167.332-.214.516zm.921-1.223-1.08-1.08A3.482 3.482 0 0 1 8 5.035v1.528c-.184.047-.357.12-.516.214zM9 6.563V5.035a3.482 3.482 0 0 1 1.596.662l-1.08 1.08A1.988 1.988 0 0 0 9 6.563zm1.223.921 1.08-1.08c.343.458.577 1.003.662 1.596h-1.528a1.989 1.989 0 0 0-.214-.516zM10.437 9h1.528a3.483 3.483 0 0 1-.662 1.596l-1.08-1.08c.094-.16.167-.332.214-.516zm-.921 1.223 1.08 1.08A3.483 3.483 0 0 1 9 11.965v-1.528c.184-.047.357-.12.516-.214zM8 10.437v1.528a3.483 3.483 0 0 1-1.596-.662l1.08-1.08c.16.094.332.167.516.214zm-1.223-.921-1.08 1.08A3.482 3.482 0 0 1 5.035 9h1.528c.047.184.12.357.214.516zM7.5 8.5a1 1 0 1 1 2 0 1 1 0 0 1-2 0z" />
+      <path
+        d="M2.5 1A1.5 1.5 0 0 0 1 2.5V3H.5a.5.5 0 0 0 0 1H1v4H.5a.5.5 0 0 0 0 1H1v4H.5a.5.5 0 0 0 0 1H1v.5A1.5 1.5 0 0 0 2.5 16h12a1.5 1.5 0 0 0 1.5-1.5v-12A1.5 1.5 0 0 0 14.5 1h-12zm6 3a4.5 4.5 0 1 1 0 9 4.5 4.5 0 0 1 0-9z" />
+
+    </symbol>
+    <symbol id="ball" viewbox="0 0 16 16">
+      <path
+        d="M5.062 12h3.475c1.804 0 2.888-.908 2.888-2.396 0-1.102-.761-1.916-1.904-2.034v-.1c.832-.14 1.482-.93 1.482-1.816 0-1.3-.955-2.11-2.542-2.11H5.062V12zm1.313-4.875V4.658h1.78c.973 0 1.542.457 1.542 1.237 0 .802-.604 1.23-1.764 1.23H6.375zm0 3.762V8.162h1.822c1.236 0 1.887.463 1.887 1.348 0 .896-.627 1.377-1.811 1.377H6.375z" />
+      <path
+        d="M0 4a4 4 0 0 1 4-4h8a4 4 0 0 1 4 4v8a4 4 0 0 1-4 4H4a4 4 0 0 1-4-4V4zm4-3a3 3 0 0 0-3 3v8a3 3 0 0 0 3 3h8a3 3 0 0 0 3-3V4a3 3 0 0 0-3-3H4z" />
+    </symbol>
+    <symbol id="ball-fill" viewbox="0 0 16 16">
+      <path
+        d="M6.375 7.125V4.658h1.78c.973 0 1.542.457 1.542 1.237 0 .802-.604 1.23-1.764 1.23H6.375zm0 3.762h1.898c1.184 0 1.81-.48 1.81-1.377 0-.885-.65-1.348-1.886-1.348H6.375v2.725z" />
+      <path
+        d="M4.002 0a4 4 0 0 0-4 4v8a4 4 0 0 0 4 4h8a4 4 0 0 0 4-4V4a4 4 0 0 0-4-4h-8zm1.06 12V3.545h3.399c1.587 0 2.543.809 2.543 2.11 0 .884-.65 1.675-1.483 1.816v.1c1.143.117 1.904.931 1.904 2.033 0 1.488-1.084 2.396-2.888 2.396H5.062z" />
+    </symbol>
+    <symbol id="scratch" viewbox="0 0 16 16">
+      <path
+        d="M0 4.5A1.5 1.5 0 0 1 1.5 3h13A1.5 1.5 0 0 1 16 4.5V6a.5.5 0 0 1-.5.5 1.5 1.5 0 0 0 0 3 .5.5 0 0 1 .5.5v1.5a1.5 1.5 0 0 1-1.5 1.5h-13A1.5 1.5 0 0 1 0 11.5V10a.5.5 0 0 1 .5-.5 1.5 1.5 0 1 0 0-3A.5.5 0 0 1 0 6V4.5ZM1.5 4a.5.5 0 0 0-.5.5v1.05a2.5 2.5 0 0 1 0 4.9v1.05a.5.5 0 0 0 .5.5h13a.5.5 0 0 0 .5-.5v-1.05a2.5 2.5 0 0 1 0-4.9V4.5a.5.5 0 0 0-.5-.5h-13Z" />
+    </symbol>
+    <symbol id="scratch-fill" viewbox="0 0 16 16">
+      <path
+        d="M1.5 3A1.5 1.5 0 0 0 0 4.5V6a.5.5 0 0 0 .5.5 1.5 1.5 0 1 1 0 3 .5.5 0 0 0-.5.5v1.5A1.5 1.5 0 0 0 1.5 13h13a1.5 1.5 0 0 0 1.5-1.5V10a.5.5 0 0 0-.5-.5 1.5 1.5 0 0 1 0-3A.5.5 0 0 0 16 6V4.5A1.5 1.5 0 0 0 14.5 3h-13Z" />
+    </symbol>
+    <symbol id="table" viewbox="0 0 16 16">
+      <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
+      <path d="M8 6a2 2 0 1 0 0 4 2 2 0 0 0 0-4zM4 8a4 4 0 1 1 8 0 4 4 0 0 1-8 0z" />
+      <path d="M9 8a1 1 0 1 1-2 0 1 1 0 0 1 2 0z" />
+    </symbol>
+    <symbol id="table-fill" viewbox="0 0 16 16">
+      <path d="M8 6a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm0 3a1 1 0 1 1 0-2 1 1 0 0 1 0 2z" />
+      <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM4 8a4 4 0 1 0 8 0 4 4 0 0 0-8 0z" />
+    </symbol>
+    <symbol id="more" viewbox="0 0 16 16">
+      <path
+        d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.012 8.012 0 0 0 16 8c0-4.42-3.58-8-8-8z" />
+    </symbol>
+    <symbol id="three-dots" viewbox="0 0 16 16">
+      <path
+        d="M3 9.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3z" />
+    </symbol>
+    <symbol id="light" viewbox="0 0 16 16">
+      <path
+        d="M8 3a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2A.5.5 0 0 1 8 3zm8 8a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1h2a.5.5 0 0 1 .5.5zm-13.5.5a.5.5 0 0 0 0-1h-2a.5.5 0 0 0 0 1h2zm11.157-6.157a.5.5 0 0 1 0 .707l-1.414 1.414a.5.5 0 1 1-.707-.707l1.414-1.414a.5.5 0 0 1 .707 0zm-9.9 2.121a.5.5 0 0 0 .707-.707L3.05 5.343a.5.5 0 1 0-.707.707l1.414 1.414zM8 7a4 4 0 0 0-4 4 .5.5 0 0 0 .5.5h7a.5.5 0 0 0 .5-.5 4 4 0 0 0-4-4zm0 1a3 3 0 0 1 2.959 2.5H5.04A3 3 0 0 1 8 8z" />
+    </symbol>
+    <symbol id="light--fill" viewbox="0 0 16 16">
+      <path
+        d="M8 3a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2A.5.5 0 0 1 8 3zm8 8a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1h2a.5.5 0 0 1 .5.5zm-13.5.5a.5.5 0 0 0 0-1h-2a.5.5 0 0 0 0 1h2zm11.157-6.157a.5.5 0 0 1 0 .707l-1.414 1.414a.5.5 0 1 1-.707-.707l1.414-1.414a.5.5 0 0 1 .707 0zm-9.9 2.121a.5.5 0 0 0 .707-.707L3.05 5.343a.5.5 0 1 0-.707.707l1.414 1.414zM8 7a4 4 0 0 0-4 4 .5.5 0 0 0 .5.5h7a.5.5 0 0 0 .5-.5 4 4 0 0 0-4-4z" />
+    </symbol>
+  </svg>
+
+  <!-- 导航栏 开始 -->
+  <nav class="navbar navbar-expand-md navbar-dark fixed-top p-0 user-select-none" id="nav">
+    <a class="collapse navbar-collapse navbar-brand justify-content-center ms-5" href="#">
+      <img src="./img/logo.png" alt="Logo" height="24"
+        class="d-inline-block align-text-top border border-success border-1 rounded-circle me-2">
+      SKKVVT
+    </a>
+    <ul class="flex-row navbar-nav justify-content-around w-100 text-center">
+      <li class="nav-item">
+        <a class="nav-link link-section active p-1" link-index="0" aria-current="page main" href="javascript:(void 0);" link-page="#main">
+          <svg class="d-block m-auto" width="24" height="24" fill="currentColor">
+            <use href="#house" />
+          </svg>
+          首页
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link link-section p-1" link-index="1" aria-current="page turn-table" href="javascript:(void 0);" link-page="#turn-table">
+          <svg class="d-block m-auto" width="24" height="24" fill="currentColor">
+            <use href="#table" />
+          </svg>
+          凼凼转
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link link-section p-1" link-index="2" aria-current="page dbl-color-ball" href="javascript:(void 0);" link-page="#dbl-color-ball">
+          <svg class="d-block m-auto" width="24" height="24" fill="currentColor">
+            <use href="#ball" />
+          </svg>
+          双色球
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link link-section p-1 disabled" link-index="3" aria-current="page scratch-card" href="javascript:(void 0);" link-page="#scratch-card">
+          <svg class="d-block m-auto" width="24" height="24" fill="currentColor">
+            <use href="#scratch" />
+          </svg>
+          刮刮乐
+        </a>
+      </li>
+      <li class="nav-item dropdown">
+        <a class="nav-link p-1 dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button"
+          data-bs-toggle="dropdown" aria-expanded="false">
+          <svg class="d-block m-auto" width="24" height="24" fill="currentColor">
+            <use href="#three-dots" />
+          </svg>
+          更多
+        </a>
+        <ul class="dropdown-menu dropdown-menu-dark dropdown-menu-end position-absolute" aria-labelledby="navbarDropdownMenuLink">
+          <li><a class="dropdown-item" href="#">Vue</a></li>
+          <li><a class="dropdown-item" href="#">React</a></li>
+          <li><a class="dropdown-item" href="#">canvas</a></li>
+        </ul>
+      </li>
+    </ul>
+    <a class="collapse navbar-collapse navbar-brand justify-content-center me-5" href="#">
+      <svg class="d-block me-2" width="24" height="24" fill="currentColor">
+        <use href="#more" />
+      </svg>
+      GitHub
+    </a>
+  </nav>
+  <!-- 导航栏 结束 -->
+  
+  <div class="container-fluid user-select-none">
+    <!-- 首页 开始 -->
+    <section id="main">
+      <div class="content d-flex flex-column">
+        <div  class="search-wrap">
+          <form class="d-flex flex-nowrap col-md-6 mt-5 m-auto ps-3 pe-3" action="http://www.baidu.com/s" method="get" target="_blank"
+          accept-charset="utf-8">
+            <input class="form-control" type="search" name="wd" autocomplete="off" placeholder="Search" aria-label="Search">
+            <button class="btn btn-primary text-nowrap" type="submit">百度一下</button>
+          </form>
+        </div>
+        <div class="main-carousel-wrap mt-4">
+          <div class="main-slide position-relative d-flex col-md-8 m-auto ps-3 pe-3">
+            <a href="javascript:;" class="main-arrow main-arrow-prev"></a>
+            <ul class="list-unstyled position-relative w-100">
+              <li class="bilibili ratio"><a href="https://www.bilibili.com/" target="_blank"><div class="triple d-flex justify-content-evenly position-absolute bottom-0 w-100 p-2"><img src="./img/like.png" alt=""><img src="./img/coin.png" alt=""><img src="./img/favorite.png" alt=""></div></a></li>
+              <li class="ratio"><a href="https://juejin.cn/" target="_blank"></a></li>
+              <li class="ratio"><a href="https://www.csdn.net/" target="_blank"></a></li>
+              <li class="ratio"><a href="https://weibo.com/" target="_blank"></a></li>
+              <li class="ratio"><a href="https://www.ifeng.com/" target="_blank"></a></li>
+              <li class="ratio"><a href="https://fanyi.baidu.com/" target="_blank"></a></li>
+            </ul>
+            <a href="javascript:void(0);" class="main-arrow main-arrow-next"></a>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- 首页 结束 -->
+    <!-- 转转盘 开始 -->
+    <section id="turn-table">
+      <!-- Grid包裹 -->
+      <div class="content row align-items-center m-0">
+        <!-- 鸡汤文字 column -->
+        <div class="content-text col-sm-4 offset-sm-1">
+          <h3>如果快乐很难</h3>
+          <p>也请记得按时吃饭</p>
+        </div>
+        <!-- 转转盘 column -->
+        <div class="col-sm-6 p-4">
+          <div class="table-wrap ratio ratio-1x1 shadow-lg">
+            <!-- 转转盘 按钮 -->
+            <div class="turn-btn"><div class="coin-animate"></div></div>
+            <!-- 转转盘指针 -->
+            <div class="pointer"></div>
+            <!-- 转转盘 内盘 -->
+            <ul class="table-center">
+              <li class="piece-wrap">
+                <div class="piece">
+                  <div class="food-name-wrap"><span class="food-name"></span></div>
+                </div>
+                <div class="piece">
+                  <div class="food-name-wrap"><span class="food-name"></span></div>
+                </div>
+              </li>
+              <li class="piece-wrap">
+                <div class="piece">
+                  <div class="food-name-wrap"><span class="food-name"></span></div>
+                </div>
+                <div class="piece">
+                  <div class="food-name-wrap"><span class="food-name"></span></div>
+                </div>
+              </li>
+              <li class="piece-wrap">
+                <div class="piece">
+                  <div class="food-name-wrap"><span class="food-name"></span></div>
+                </div>
+                <div class="piece">
+                  <div class="food-name-wrap"><span class="food-name"></span></div>
+                </div>
+              </li>
+              <li class="piece-wrap">
+                <div class="piece">
+                  <div class="food-name-wrap"><span class="food-name"></span></div>
+                </div>
+                <div class="piece">
+                  <div class="food-name-wrap"><span class="food-name"></span></div>
+                </div>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- 转转盘 结束 -->
+    <!-- 双色球 开始 -->
+    <section id="dbl-color-ball">
+      <!-- Grid包裹 -->
+      <div class="content row align-items-center m-0">
+        <!-- 双色球 row -->
+        <div class="col-sm-5 offset-sm-1 p-4">
+          <div class="choose-ball-wrap shadow-lg">
+            <form class="form-example" name="dbl-rules">
+              <table class="choose-ball table table-sm table-bordered table-light align-middle">
+                <thead>
+                  <tr>
+                    <th colspan="4">中国福利彩票-双色球天选时刻</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="rb-rules-cell table-danger" rowspan="7">红球</td>
+                    <td>红球个数</td>
+                    <td>
+                      <select class="form-select form-select-sm" name="rbCount" id="rbCount">
+                        <option selected value="6">6</option>
+                      </select>
+                    </td>
+                    <td>
+                      <input type="radio" class="btn-check" name="isSimplex" id="simplex" value="1" checked>
+                      <label class="btn-sm btn-outline-success" for="simplex">单式</label>
+                      <input type="radio" class="btn-check" name="isSimplex" id="compound" value="0">
+                      <label class="btn-sm btn-outline-danger" for="compound">复式</label>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>奇偶比</td>
+                    <td colspan="2">
+                      <select class="form-select form-select-sm" name="oddCount" id="oddCount">
+                        <option selected value="">随机</option>
+                      </select>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>大小比</td>
+                    <td colspan="2">
+                      <select class="form-select form-select-sm" name="largeCount" id="largeCount">
+                        <option selected value="">随机</option>
+                      </select>
+                    </td>
+                  </tr>
+                  <tr class="customizeRNum">
+                    <td>红球定胆</td>
+                    <td>
+                      <select class="form-select form-select-sm" name="includeNumRA" id="includeNumRA">
+                        <option selected value="">随机</option>
+                      </select>
+                    </td>
+                    <td>
+                      <select class="form-select form-select-sm" name="includeNumRB" id="includeNumRB">
+                        <option selected value="">随机</option>
+                      </select>
+                    </td>
+                  </tr>
+                  <tr class="customizeRNum">
+                    <td>红球杀号</td>
+                    <td>
+                      <select class="form-select form-select-sm" name="removeNumRA" id="removeNumRA">
+                        <option selected value="">随机</option>
+                      </select>
+                    </td>
+                    <td>
+                      <select class="form-select form-select-sm" name="removeNumRB" id="removeNumRB">
+                        <option selected value="">随机</option>
+                      </select>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>选择连号</td>
+                    <td colspan="2">
+                      <input type="radio" class="btn-check" name="sequential" id="undefined-sequential" value=""
+                        checked>
+                      <label class="btn-sm btn-outline-primary" for="undefined-sequential">随机</label>
+                      <input type="radio" class="btn-check" name="sequential" id="sequential" value="1">
+                      <label class="btn-sm btn-outline-success" for="sequential">是</label>
+                      <input type="radio" class="btn-check" name="sequential" id="no-sequential" value="0">
+                      <label class="btn-sm btn-outline-danger" for="no-sequential">否</label>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>和值范围</td>
+                    <td colspan="2">
+                      <div class="input-group">
+                        <input type="text" class="form-control form-control-sm" name="rbSumMin" placeholder="21">
+                        <span class="input-group-text">~</span>
+                        <input type="text" class="form-control form-control-sm" name="rbSumMax" placeholder="183">
+                      </div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="bb-rules-cell table-info" rowspan="5">蓝球</td>
+                    <td>蓝球个数</td>
+                    <td colspan="2">
+                      <select class="form-select form-select-sm" name="bbCount" id="bbCount">
+                        <option selected value="1">1</option>
+                      </select>
+                    </td>
+                  </tr>
+                  <tr class="customizeBNum">
+                    <td>蓝球定胆</td>
+                    <td colspan="2">
+                      <select class="form-select form-select-sm" name="includeNumBA" id="includeNumBA">
+                        <option selected value="">随机</option>
+                      </select>
+                    </td>
+                  </tr>
+                  <tr class="customizeBNum">
+                    <td>蓝球杀号</td>
+                    <td colspan="2">
+                      <select class="form-select form-select-sm" name="removeNumBA" id="removeNumBA">
+                        <option selected value="">随机</option>
+                      </select>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>蓝球奇偶</td>
+                    <td colspan="2">
+                      <select class="form-select form-select-sm" name="isOdd">
+                        <option selected value="">随机</option>
+                        <option value="1">奇</option>
+                        <option value="0">偶</option>
+                      </select>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>蓝球大小</td>
+                    <td colspan="2">
+                      <select class="form-select form-select-sm" name="isLarge">
+                        <option selected value="">随机</option>
+                        <option value="1">大</option>
+                        <option value="0">小</option>
+                      </select>
+                    </td>
+                  </tr>
+                </tbody>
+                <tfoot>
+                  <tr>
+                    <td>
+                      <div class="d-grid"><input class="btn btn-warning btn-sm" type="reset" value="清除条件"></div>
+                    </td>
+                    <td colspan="3">
+                      <div class="d-grid"><input class="btn btn-primary btn-sm" type="button" value="摇号"></div>
+                    </td>
+                  </tr>
+                </tfoot>
+              </table>
+            </form>
+          </div>
+        </div>
+        <div class="col-sm-4 offset-sm-1">
+          <!-- 鸡汤文字 row -->
+          <div class="content-text row mb-4 mt-4">
+            <h3>梦想还是要有的</h3>
+            <p>万一哪天就提前退休了呢</p>
+          </div>
+          <!-- 选号结果 -->
+          <div class="dbl-ball-result-wrap row mb-5 shadow-lg">
+            <table class="dbl-ball-result table table-sm table-bordered table-warning align-middle">
+              <thead class="table-light">
+                <tr>
+                  <th colspan="2">一码归一码</th>
+                </tr>
+              </thead>
+              <tbody>
+              </tbody>
+              <tfoot>
+                <tr>
+                  <td colspan="2">
+                    <div class="d-grid"><button class="clearResult btn btn-primary btn-sm" type="button">万码奔腾</button>
+                    </div>
+                  </td>
+                </tr>
+              </tfoot>
+            </table>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- 双色球 结束 -->
+    <!-- 刮刮乐 开始 -->
+    <section id="scratch-card" style="display: none;"></section>
+    <!-- 刮刮乐 结束 -->
+  </div>
+
+  <script src="./js/jquery.min.js"></script>
+  <script src="./js/bootstrap.min.js"></script>
+  <script type="module" src="./js/navbar.js"></script>
+  <script type="module" src="./js/main.js"></script>
+  <script type="module" src="./js/turnTable.js"></script>
+  <script type="module" src="./js/dblColorBallUI.js"></script>
+</body>
+
+</html>

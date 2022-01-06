@@ -1,0 +1,18 @@
+#nav, #nav .dropdown-menu {
+  background-color: #06c05f;
+  opacity: .85;
+}
+
+.dropdown-toggle::after {
+  content: none;
+}
+
+.navbar-dark .navbar-nav .nav-link {
+  color: rgb(255, 255, 255, .75);
+}
+.navbar-dark .navbar-nav .nav-link:hover {
+  color: rgb(255, 255, 255, 1);
+}
+
+.navbar-brand:first-child { margin-right: 8rem; }
+.navbar-brand:last-child { margin-left: 8rem; }

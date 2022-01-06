@@ -1,0 +1,123 @@
+
+/* 滚动条样式 */
+::-webkit-scrollbar-track {
+	box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+	background-color: #F5F5F5;
+}
+
+::-webkit-scrollbar { 
+	width: .5rem;
+  height: .5rem;
+	background-color: #F5F5F5;
+}
+
+::-webkit-scrollbar-thumb {
+	border-radius: .5rem;
+	background-image: -webkit-gradient(
+    linear,
+    left bottom,
+    left top,
+    color-stop(0.44, rgb(122,153,217)),
+    color-stop(0.72, rgb(73,125,189)),
+    color-stop(0.86, rgb(28,58,148))
+  );
+}
+
+#dbl-color-ball {
+  width: 100%;
+  min-height: 100vh;
+  background: #e31d1a;
+  left: 100%;
+}
+
+#dbl-color-ball .content { width: 100%; min-height: 100vh; }
+
+#dbl-color-ball .content-text { text-align: center; }
+
+/* 设置选号表格样式 */
+.choose-ball-wrap { 
+  width: 100%;
+  border-radius: .5rem; 
+  overflow-x: auto; 
+}
+.choose-ball { margin: 0; }
+/* 设置表格行列样式 */
+td, th{
+  text-align: center;
+  white-space: nowrap;
+}
+/* 设置第一列宽度 */
+.choose-ball tbody tr:first-child td:nth-of-type(1){ width: 20%; }
+/* 设置第二列宽度 */
+.choose-ball tbody tr:first-child td:nth-of-type(2){ width: 20%; }
+/* 设置第三列宽度 */
+.choose-ball tbody tr:first-child td:nth-of-type(3){ width: 30%; }
+/* 设置第四列宽度 */
+.choose-ball tbody tr:first-child td:nth-of-type(4){ width: 30%; }
+/* 设置最后一行左对齐 */
+.choose-ball tr td:last-child{ text-align: left; }
+
+/* 设置结果表格样式 */
+.dbl-ball-result-wrap {
+  display: none;
+  width: 85%; 
+  max-height: 50vh;
+  margin: auto;
+  border-radius: .5rem;
+  overflow-y: auto;
+}
+.dbl-ball-result { margin: 0;}
+.dbl-ball-result thead tr{ 
+  position: sticky; 
+  top: 0;
+  z-index: 10;
+}
+.dbl-ball-result tfoot tr{ 
+  position: sticky; 
+  bottom: 0;
+}
+.single-result { position: relative; }
+.single-result td:last-child { width: 10%; }
+
+/* 设置选号结果按钮的提示标签样式 */
+.tooltips {
+  position: absolute;
+  top: -1.8rem;
+  left: .25rem;
+  width: 5rem;
+  height: 1.6rem;
+  background: #6c757d;
+  border-radius: .2rem;
+  text-align: center;
+  line-height: 1.6rem;
+  font-size: .875rem;
+  color: #fff;
+  z-index: 100;
+}
+.tooltips span {
+  display: block;
+  width: .5rem;
+  height: .5rem;
+  background: inherit;
+  position: absolute;
+  bottom: -.25rem;
+  left: calc(50% - .25rem);
+  transform: rotate(45deg);
+}
+
+/* 设置隐藏式input样式，以便点击按钮复制文本 */
+.result-copy-text {
+  position: absolute;
+  z-index: -100;
+  opacity: 0;
+}
+
+/* 设置“靓号”和“爆号”标签的样式 */
+.single-result .copyResult {
+  position: relative;
+}
+.single-result .copyResult em {
+  position: absolute;
+  right: 0.25rem;
+  top: 0.25rem;
+}

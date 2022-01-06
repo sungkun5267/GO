@@ -1,0 +1,178 @@
+#turn-table {
+  width: 100%;
+  height: 100vh;
+  background: #ff5000;
+  left: 100%;
+}
+
+#turn-table .content { width: 100%; height: 100%; }
+
+#turn-table .content-text { text-align: center; }
+
+.table-wrap {
+  position: relative;
+  overflow: hidden;
+  margin: auto;
+  max-width: 28.125rem;
+  background-color: #fffadf;
+  border: .625rem solid #514938;
+  box-sizing: border-box;
+  border-radius: 50%;
+}
+
+.table-center {
+  padding: 0;
+  position: absolute;
+  width: 94%;
+  height: 94%;
+  top: 3%;
+  left: 3%;
+  border-radius: 50%;
+  overflow: hidden;
+}
+
+.turn-btn {
+  cursor: pointer;
+  position: absolute;
+  top: 43%;
+  left: 43%;
+  width: 14%;
+  height: 14%;
+  background-color: #585d37;
+  background-image: url(../img/coin.png);
+  background-size: 100%;
+  border-radius: 50%;
+  z-index: 2;
+}
+
+.pointer {
+  position: absolute;
+  left: calc(50% - 1rem);
+  top: calc(50% - 3rem);
+  width: 0;
+  height: 0;
+  border-top: none;
+  border-left: 1rem solid transparent;
+  border-right: 1rem solid transparent;
+  border-bottom: 3rem solid #8f9435;
+  background-color: transparent;
+  z-index: 1;
+  transform-origin: bottom center;
+}
+
+.piece-wrap {
+  position: relative;
+  overflow: hidden;
+  width: 50%;
+  height: 50%;
+  float: left;
+  border: .03125rem solid #fff;
+  border-radius: 10%;
+  box-sizing: border-box;
+}
+
+.piece-wrap:nth-child(1) { transform-origin: bottom right; }
+.piece-wrap:nth-child(2) { transform-origin: bottom left; }
+.piece-wrap:nth-child(3) { transform-origin: top right; }
+.piece-wrap:nth-child(4) { transform-origin: top left; }
+
+.piece {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border-radius: inherit;
+  border: inherit;
+  box-sizing: inherit;
+  transform-origin: inherit;
+}
+
+.piece:first-child {
+  background-color: #fed95c;
+  transform: rotate(-45deg);
+}
+
+.piece:last-child {
+  background-color: #f69e53;
+  transform: rotate(45deg);
+}
+
+.food-name-wrap {
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  width: 3rem;
+  height: 100%;
+  padding-top:10%;
+  padding-bottom:35%;
+  transform-origin: bottom center;
+}
+
+.piece-wrap:nth-of-type(2n+1) .food-name-wrap { right: -1.5rem; }
+
+.piece-wrap:nth-of-type(2n) .food-name-wrap { left: -1.5rem; }
+
+.piece-wrap:nth-child(1) .piece:first-child .food-name-wrap { transform: rotate(-22.5deg); }
+
+.piece-wrap:nth-child(1) .piece:last-child .food-name-wrap { transform: rotate(-67.5deg); }
+
+.piece-wrap:nth-child(2) .piece:first-child .food-name-wrap { transform: rotate(67.5deg); }
+
+.piece-wrap:nth-child(2) .piece:last-child .food-name-wrap { transform: rotate(22.5deg); }
+
+.piece-wrap:nth-child(3) .piece:first-child .food-name-wrap {
+  top: -100%;
+  transform: rotate(-112.5deg);
+}
+
+.piece-wrap:nth-child(3) .piece:last-child .food-name-wrap {
+  top: -100%;
+  transform: rotate(-157.5deg);
+}
+
+.piece-wrap:nth-child(4) .piece:first-child .food-name-wrap {
+  top: -100%;
+  transform: rotate(157.5deg);
+}
+
+.piece-wrap:nth-child(4) .piece:last-child .food-name-wrap {
+  top: -100%;
+  transform: rotate(112.5deg);
+}
+
+.food-name {
+  display: flex;
+  font-size: 1rem;
+  color: #fff;
+  writing-mode: vertical-lr;
+  text-align: center;
+}
+
+.coin-animate {
+  /* display: none; */
+  width: 100%;
+  height: 100%;
+  background-color: transparent;
+  background-image: url(../img/coin-animate.png);
+  background-size: 100%;
+  opacity: 0;
+  transform: rotateY(0deg);
+  transition: transform, 2s;
+}
+
+.btn-text::after {
+  content: '';
+  height: 100%;
+  font-size: 0;
+  display: inline-block;
+  vertical-align: middle;
+}
+
+@keyframes turnPointer {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(1800deg);
+  }
+}
